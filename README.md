@@ -1,1 +1,1 @@
-[Link](kredit-rechner.netlify.app)
+[Link](https://kredit-rechner.netlify.app/)
