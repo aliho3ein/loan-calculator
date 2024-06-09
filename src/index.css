@@ -66,7 +66,7 @@ div > span {
   font-weight: 700;
 }
 
-input {
+input[type="number"] {
   width: 180px;
   padding: 5px;
   font-size: 1.2rem;
@@ -98,7 +98,7 @@ ul span {
   font-weight: 700;
 }
 
-ul span:after {
+ul span.euro:after {
   content: " €";
   font-weight: 700;
 }
@@ -112,6 +112,26 @@ li::before {
   font: var(--fa-font-solid);
   margin-right: 8px;
   font-size: 0.8rem;
+}
+
+li > span.info::before {
+  content: "\f05a";
+  font: var(--fa-font-solid);
+  margin-right: 8px;
+  font-size: 0.8rem;
+}
+
+.smallInput {
+  width: 30px !important;
+}
+
+.mediumInput {
+  width: 100px !important;
+}
+
+h3 {
+  width: 100%;
+  text-align: center;
 }
 
 .green {
