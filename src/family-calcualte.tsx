@@ -101,6 +101,7 @@ export const FamilyCalculate = () => {
                 className="mediumInput"
                 type="number"
                 defaultValue={input.nrwBank}
+                name="nrwBank"
                 onChange={(e) =>
                   updateInput(
                     e.target.name as inputType,
@@ -138,7 +139,7 @@ export const FamilyCalculate = () => {
               onChange={(e) =>
                 updateInput(
                   e.target.name as inputType,
-                  parseInt(e.target.value)
+                  parseFloat(e.target.value)
                 )
               }
             />{" "}
