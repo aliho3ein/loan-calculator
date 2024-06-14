@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type inputType = "mainCost" | "hasProvision";
 
@@ -10,9 +10,11 @@ export const FamilyCalculate = () => {
     nrwBank: 189000,
     nrwYears: 30,
     nrwBankInterest: 1,
+    nrwMonthly: 0,
     remainingCost: 0,
     remainingInterest: 4,
     remainingYears: 30,
+    remainingMonthly: 0,
   });
 
   useEffect(() => {
@@ -43,7 +45,33 @@ export const FamilyCalculate = () => {
     });
   };
 
-  console.log(input);
+  useEffect(() => {
+    const monthlyInterest = input.nrwBankInterest / 1200;
+    const result =
+      (input.nrwBank *
+        monthlyInterest *
+        (1 + monthlyInterest) ** (input.nrwYears * 12)) /
+      ((1 + monthlyInterest) ** (input.nrwYears * 12) - 1);
+
+    result &&
+      setInput((p) => {
+        return { ...p, nrwMonthly: result };
+      });
+  }, [input.nrwBank, input.nrwYears, input.nrwBankInterest]);
+
+  useEffect(() => {
+    const monthlyInterest = input.remainingInterest / 1200;
+    const result =
+      (input.remainingCost *
+        monthlyInterest *
+        (1 + monthlyInterest) ** (input.remainingYears * 12)) /
+      ((1 + monthlyInterest) ** (input.remainingYears * 12) - 1);
+
+    result &&
+      setInput((p) => {
+        return { ...p, remainingMonthly: result };
+      });
+  }, [input.remainingCost, input.remainingInterest, input.remainingYears]);
 
   return (
     <>
@@ -145,13 +173,7 @@ export const FamilyCalculate = () => {
             />{" "}
             {Math.round((input.nrwBank / 100 / 12) * input.nrwBankInterest)}€
             Zins + {Math.round(input.nrwBank / input.nrwYears / 12)}€ Til. ={" "}
-            <b>
-              {Math.round(
-                input.nrwBank / 100 / 12 + input.nrwBank / input.nrwYears / 12
-              )}
-              €
-            </b>{" "}
-            /Monatlich
+            <b>{Math.round(input.nrwMonthly)}€</b> /Monatlich
           </li>
           {input.nrwBank < input.summery && (
             <li>
@@ -187,25 +209,11 @@ export const FamilyCalculate = () => {
                 (input.remainingInterest * input.remainingCost) / 1200
               )}
               € + {Math.round(input.remainingCost / 12 / input.remainingYears)}€
-              Til. ={" "}
-              <b>
-                {Math.round(
-                  (input.remainingInterest * input.remainingCost) / 1200 +
-                    input.remainingCost / 12 / input.remainingYears
-                )}
-                €
-              </b>{" "}
-              /Monatlich
+              Til. = <b>{Math.round(input.remainingMonthly)}€</b> /Monatlich
             </li>
           )}
           <h3 className="green">
-            {Math.round(
-              (input.nrwBank / 100 / 12) * input.nrwBankInterest +
-                input.nrwBank / input.nrwYears / 12 +
-                ((input.remainingInterest * input.remainingCost) / 1200 +
-                  input.remainingCost / 12 / input.remainingYears)
-            )}
-            € / Monatlich
+            {Math.round(input.remainingMonthly + input.nrwMonthly)}€ /Monatlich
           </h3>
         </ul>
       )}
